@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js" defer></script>
 <style>
 :root{
   --ink:#0b0c0e;
@@ -197,25 +199,40 @@ section{position:relative}
 .obra .spec{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font-family:var(--mono);font-size:11px;color:#9ea3ac;letter-spacing:.06em}
 .obra .spec span::before{content:"+ ";color:var(--orange)}
 
-/* CONFIANZA */
-.trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-2)}
-.trust .wrap{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:center;padding-top:44px;padding-bottom:44px}
-.trust-list{display:flex;flex-wrap:wrap;gap:12px}
-.chip{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1px solid var(--line-2);background:rgba(255,255,255,.02)}
-.chip b{font-family:var(--display);font-stretch:118%;font-weight:800;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:#fff}
-.chip small{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
-.chip.star{border-color:rgba(247,148,29,.5);background:linear-gradient(90deg,rgba(247,148,29,.12),transparent)}
-.chip .s{color:var(--orange);font-size:16px}
 
 /* ZONA */
 .zona-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:64px;align-items:center}
 .zona-list{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
 .zona-list li{list-style:none;padding:14px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px;letter-spacing:.04em;display:flex;justify-content:space-between;padding-right:18px;color:#d6d8dc}
 .zona-list li span{color:var(--mute)}
-.radar{position:relative;aspect-ratio:1;max-width:560px;width:100%;justify-self:end;border:1px solid var(--line);background:radial-gradient(circle at 50% 50%,rgba(30,99,214,.12),transparent 60%),var(--ink-2)}
-.radar svg{position:absolute;inset:0;width:100%;height:100%}
-.radar .sweep{position:absolute;inset:8%;border-radius:50%;background:conic-gradient(from 0deg,rgba(247,148,29,.28),transparent 22%);animation:spin 7s linear infinite}
-.radar .corner{position:absolute;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+.zona-list li{transition:color .25s;outline:none;cursor:default}
+.zona-list li span{transition:color .25s}
+.zona-list li.on{color:#fff}
+.zona-list li.on span{color:var(--orange)}
+
+/* ZONA MAPA */
+.zmap{position:relative;aspect-ratio:1;width:100%;max-width:680px;justify-self:end}
+.zmap-gl{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;--fade:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);-webkit-mask-image:var(--fade);-webkit-mask-composite:source-in;mask-image:var(--fade);mask-composite:intersect}
+.zmap.in .zmap-gl{opacity:1}
+.zmk{--d:0s;display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:12.5px;font-weight:600;color:#dfe2e7;text-shadow:0 0 4px #0b0c0e,0 0 12px #0b0c0e;opacity:0;transition:opacity .7s ease var(--d),color .25s}
+.zmap.in .zmk{opacity:1}
+.zmk i{width:7px;height:7px;border-radius:50%;background:#e9eaec;flex:none;position:relative;transition:background .25s,box-shadow .25s,transform .25s}
+.zmk small{font-size:11px;font-weight:500;color:var(--mute);transition:color .25s}
+.zmk.hl{color:#fff}
+.zmk.hl small{color:var(--orange)}
+.zmk.hl i{background:var(--orange);box-shadow:0 0 0 5px rgba(247,135,31,.18);transform:scale(1.25)}
+.zmk.base{font-size:15px;font-weight:700;color:#fff}
+.zmk.base small{color:var(--orange)}
+.zmk.base i{width:11px;height:11px;background:var(--orange)}
+.zmk.base i::before,.zmk.base i::after{content:"";position:absolute;inset:-1px;border-radius:50%;border:1.5px solid var(--orange);animation:zping 2.8s ease-out infinite}
+.zmk.base i::after{animation-delay:1.4s}
+@keyframes zping{from{transform:scale(1);opacity:.8}to{transform:scale(5);opacity:0}}
+.zm-hud{position:absolute;z-index:3;font-size:12px;color:var(--mute);opacity:0;transition:opacity .8s ease .6s}
+.zmap.in .zm-hud{opacity:1}
+.zm-hud.tl{left:4px;top:4px;pointer-events:none}
+.zm-hud.br{right:4px;bottom:4px;font-size:10.5px}
+.zm-hud.br a:hover{color:var(--text)}
+@media (max-width:600px){.zmk{font-size:11px}.zmk small{display:none}.zmk.base small,.zmk.hl small{display:inline}}
 
 /* CONTACTO */
 .contacto{padding:clamp(80px,10vw,130px) 0;position:relative;overflow:hidden;border-top:1px solid var(--line)}
@@ -274,8 +291,7 @@ footer{border-top:1px solid var(--line);padding:48px 0 34px;background:#08090a}
   .obra.a,.obra.b,.obra.c,.obra.d,.obra.e,.obra.f{grid-column:span 1;grid-row:span 1}
   .obra.a{grid-column:span 2;grid-row:span 1}
   .zona-grid,.contact-box{grid-template-columns:1fr}
-  .radar{justify-self:start}
-  .trust .wrap{grid-template-columns:1fr;gap:22px}
+  .zmap{justify-self:start}
   .foot{grid-template-columns:1fr 1fr}
   .foot > div:first-child{grid-column:span 2}
 }
@@ -334,7 +350,7 @@ body::before{display:none}
 .h-xl{font-size:clamp(36px,4.4vw,60px)}
 .h-lg{font-size:clamp(30px,3.4vw,46px)}
 .h-md{font-size:clamp(20px,1.7vw,24px);line-height:1.2}
-.eyebrow,.nav-links,.tag,.stat span,.idx,.sec-num,.hv-chip,.hv-cap,.radar .corner,[class*="mono"],.mono{text-transform:none!important;letter-spacing:0!important}
+.eyebrow,.nav-links,.tag,.stat span,.idx,.sec-num,.hv-chip,.hv-cap,[class*="mono"],.mono{text-transform:none!important;letter-spacing:0!important}
 .eyebrow{font-size:14px;font-weight:600;color:var(--orange)}
 .eyebrow::before{display:none}
 .nav-links{font-size:15px;font-weight:500}
@@ -342,33 +358,50 @@ body::before{display:none}
 .btn{border-radius:10px;font-weight:600;letter-spacing:0}
 .tag{border-radius:999px}
 .ph{border-radius:14px;overflow:hidden}
-.radar .sweep{display:none}
-.hero{padding:88px 0 0}
+.hero{padding:24px 0 0}
 .hero h1{margin:18px 0 22px;max-width:16ch}
 .hero-grid{align-items:center;gap:64px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 .hero-copy{padding-bottom:0}
 .hero-visual{height:auto}
 .hv-main{position:relative;width:100%;height:520px;clip-path:none;border-radius:18px}
 .hv-main::after{background:none!important}
-.stats{grid-template-columns:repeat(3,1fr);margin-top:72px;background:none;border-bottom:0}
+.stats{grid-template-columns:repeat(3,1fr);margin-top:32px;background:none;border-bottom:0}
 .stat::before{display:none!important}
 .stat b{font-size:clamp(26px,2.4vw,34px);font-weight:700}
 .stat span{font-size:15px;color:var(--mute)}
 @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px}.hv-main{height:380px}}
-@media (max-width:600px){.hero{padding-top:48px}.hv-main{height:300px}.stats{grid-template-columns:1fr;margin-top:40px}.stat{border-right:0;border-bottom:1px solid var(--line);padding:18px 0}.stat:last-child{border-bottom:0}}
+@media (max-width:600px){.hero{padding-top:20px}.hv-main{height:300px}.stats{grid-template-columns:1fr;margin-top:40px}.stat{border-right:0;border-bottom:1px solid var(--line);padding:18px 0}.stat:last-child{border-bottom:0}}
 
-.logo-sub,.serv li,.paso .k,.obra .cat,.chip b,.chip small,.foot h4,.legal{text-transform:none!important;letter-spacing:0!important;font-stretch:100%!important}
+.logo-sub,.serv li,.paso .k,.obra .cat,.foot h4,.legal{text-transform:none!important;letter-spacing:0!important;font-stretch:100%!important}
 .serv li{font-size:13px;border-radius:999px;padding:5px 11px}
-.paso .k,.obra .cat,.chip small{font-size:13px}
-.chip b{font-size:16px;font-weight:700}
+.paso .k,.obra .cat{font-size:13px}
 .foot h4{font-size:14px;font-weight:600}
 .hero h1{max-width:18ch;font-size:clamp(34px,3.9vw,54px)}
 
 .hero h1 .tri-text{font-weight:800}
 .hv-main::after{background:linear-gradient(180deg,transparent 55%,rgba(11,12,14,.85))!important}
 .hero-cap{position:absolute;left:22px;right:22px;bottom:20px;z-index:4;display:flex;flex-direction:column;gap:2px}
+.hero::before{content:"";position:absolute;inset:0;background:url(assets/hero-bg.jpg) center/cover no-repeat;opacity:.12;filter:grayscale(1);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--ink) 100%);pointer-events:none}
+.hero > .wrap{position:relative;z-index:1}
 .hero-cap span{font-size:13px;color:var(--orange);font-weight:600}
 .hero-cap b{font-size:17px;color:#fff;font-weight:600}
+
+/* HERO 3D */
+.hv-3d{position:relative;width:100%;height:580px;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;background:none}
+.hv-3d.drag{cursor:grabbing}
+.hv-3d canvas{position:absolute;inset:0;display:block;width:100%!important;height:100%!important;opacity:0;transition:opacity 1.2s ease}
+.hv-3d.ready canvas{opacity:1}
+.hv3-hint,.hv3-legend{position:absolute;z-index:2;left:50%;font-size:12.5px;color:#c9ccd2;pointer-events:none;opacity:0;transform:translate(-50%,6px);transition:opacity .8s ease,transform .8s ease}
+.hv-3d.intro-done .hv3-hint,.hv-3d.intro-done .hv3-legend{opacity:1;transform:translate(-50%,0)}
+.hv3-legend{bottom:0;display:flex;gap:16px;white-space:nowrap}
+.hv3-legend span{display:flex;align-items:center;gap:6px}
+.hv3-legend span::before{content:"";width:14px;height:3px;border-radius:2px;background:var(--c)}
+.hv3-hint{top:0;display:flex;align-items:center;gap:7px;color:var(--mute);white-space:nowrap}
+.hv3-hint svg{width:16px;height:16px}
+.hv-3d.touched .hv3-hint{opacity:0!important}
+@media (max-width:900px){.hv-3d{height:480px}}
+@media (max-width:600px){.hv-3d{height:380px}.hv3-legend{display:none}.hv3-hint{top:0}}
 
 .ph > .hero-cap.on{position:absolute!important;left:18px;right:auto;bottom:18px;top:auto;background:rgba(11,12,14,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:12px 16px;border-radius:12px;border:1px solid var(--line-2)}
 </style>
@@ -422,9 +455,9 @@ body::before{display:none}
         </div>
       </div>
       <div class="hero-visual rv d3">
-        <div class="ph hv-main">
-          <img src="assets/obra-7.jpg" alt="Clínica Güemes, cliente de mantenimiento integral de ANDIA" onerror="this.remove()" style="object-position:center 35%">
-          <div class="hero-cap on"><span>Cliente</span><b>Clínica Güemes · Mantenimiento integral</b></div>
+        <div class="hv-3d" id="hero3d" role="img" aria-label="Edificio en 3D con instalaciones eléctricas, sanitarias, gas y climatización">
+          <div class="hv3-legend"><span style="--c:var(--blue)">Agua</span><span style="--c:var(--yellow)">Gas</span><span style="--c:var(--red)">Electricidad</span><span style="--c:#cfd3da">Clima</span></div>
+          <div class="hv3-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 12h16M4 12l3-3M4 12l3 3M20 12l-3-3M20 12l-3 3"/></svg>Arrastrá para girar</div>
         </div>
       </div>
     </div>
@@ -611,22 +644,6 @@ body::before{display:none}
   </div>
 </section>
 
-<!-- CONFIANZA -->
-<section class="trust" id="confianza">
-  <div class="wrap">
-    <div>
-      <div class="eyebrow">Confían en nosotros</div>
-    </div>
-    <div class="trust-list">
-      <div class="chip star"><span class="s">★</span><div><b>YORK Latinoamérica</b><br><small>Reconocimiento</small></div></div>
-      <div class="chip"><div><b>Clínica Güemes</b><br><small>Mantenimiento integral</small></div></div>
-      <div class="chip"><div><b>Sindicato Telecomunicaciones</b><br><small>Obra junto a RAC</small></div></div>
-      <div class="chip"><div><b>York · Hitachi</b><br><small>Instaladores</small></div></div>
-      <div class="chip"><div><b>Clínicas privadas</b><br><small>Climatización</small></div></div>
-    </div>
-  </div>
-</section>
-
 <!-- ZONA -->
 <section class="sec" id="zona">
   <div class="wrap">
@@ -636,37 +653,20 @@ body::before{display:none}
         <h2 class="h-lg" style="margin-top:20px">Salta capital <span class="tri-text">y alrededores.</span></h2>
         <p class="lead" style="margin-top:22px">Base en la ciudad de Salta, con traslado a localidades cercanas y establecimientos rurales. ¿Tu obra está más lejos? Consultanos igual.</p>
         <ul class="zona-list">
-          <li>Salta Capital <span>Base</span></li>
-          <li>San Lorenzo <span>~10 km</span></li>
-          <li>Vaqueros <span>~12 km</span></li>
-          <li>Cerrillos <span>~15 km</span></li>
-          <li>La Caldera <span>~20 km</span></li>
-          <li>Rosario de Lerma <span>~33 km</span></li>
-          <li>Campo Quijano <span>~35 km</span></li>
-          <li>Gral. Güemes <span>~50 km</span></li>
+          <li tabindex="0" data-lng="-65.4117" data-lat="-24.7859">Salta Capital <span>Base</span></li>
+          <li tabindex="0" data-lng="-65.4867" data-lat="-24.7297" data-side="l">San Lorenzo <span>~10 km</span></li>
+          <li tabindex="0" data-lng="-65.4078" data-lat="-24.6956">Vaqueros <span>~12 km</span></li>
+          <li tabindex="0" data-lng="-65.4867" data-lat="-24.8986">Cerrillos <span>~15 km</span></li>
+          <li tabindex="0" data-lng="-65.3817" data-lat="-24.6033">La Caldera <span>~20 km</span></li>
+          <li tabindex="0" data-lng="-65.5797" data-lat="-24.9789" data-side="l">Rosario de Lerma <span>~33 km</span></li>
+          <li tabindex="0" data-lng="-65.6372" data-lat="-24.9094" data-side="l">Campo Quijano <span>~35 km</span></li>
+          <li tabindex="0" data-lng="-65.0478" data-lat="-24.6656" data-side="l">Gral. Güemes <span>~50 km</span></li>
         </ul>
       </div>
-      <div class="radar" aria-label="Mapa esquemático de cobertura">
-        <div class="sweep"></div>
-        <svg viewBox="0 0 400 400" fill="none">
-          <g stroke="rgba(255,255,255,.12)">
-            <circle cx="200" cy="200" r="46"/><circle cx="200" cy="200" r="94"/><circle cx="200" cy="200" r="142" stroke-dasharray="3 5"/><circle cx="200" cy="200" r="184" stroke="url(#g-tri)" stroke-width="1.5"/>
-            <path d="M200 10v380M10 200h380" stroke-dasharray="2 6"/>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#c9ccd2" letter-spacing=".5">
-            <circle cx="200" cy="200" r="7" fill="#F7871F"/><circle cx="200" cy="200" r="14" stroke="#F7871F" stroke-opacity=".5"/>
-            <text x="214" y="196" fill="#fff" font-size="12" font-weight="700">SALTA</text>
-            <circle cx="166" cy="178" r="4" fill="#E8262B"/><text x="100" y="172">SAN LORENZO</text>
-            <circle cx="205" cy="140" r="4" fill="#E8262B"/><text x="214" y="138">VAQUEROS</text>
-            <circle cx="215" cy="88" r="4" fill="#1F6FE5"/><text x="224" y="86">LA CALDERA</text>
-            <circle cx="190" cy="262" r="4" fill="#E8262B"/><text x="200" y="266">CERRILLOS</text>
-            <circle cx="110" cy="276" r="4" fill="#1F6FE5"/><text x="62" y="296">R. DE LERMA</text>
-            <circle cx="92" cy="250" r="4" fill="#1F6FE5"/><text x="30" y="242">C. QUIJANO</text>
-            <circle cx="300" cy="74" r="4" fill="#1F6FE5"/><text x="276" y="62">GÜEMES</text>
-          </g>
-        </svg>
-        <span class="corner" style="left:14px;top:12px">24°47′S · 65°24′O</span>
-        <span class="corner" style="right:14px;bottom:12px">Radio ~50 km</span>
+      <div class="zmap" id="zmap" role="img" aria-label="Mapa de cobertura: Salta capital y localidades en un radio de 50 km">
+        <div class="zmap-gl"></div>
+        <div class="zm-hud tl">24°47′S · 65°24′O</div>
+        <div class="zm-hud br">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a></div>
       </div>
     </div>
   </div>
@@ -715,6 +715,447 @@ body::before{display:none}
 </footer>
 
 <a class="fab" href="#contacto" aria-label="Escribinos por WhatsApp"><svg><use href="#i-wa"/></svg></a>
+
+<!-- HERO 3D -->
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const el = document.getElementById('hero3d');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+} catch (e) { el.classList.add('intro-done'); throw e; }
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+el.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.35;
+const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
+const target = new THREE.Vector3(0, 1.8, 0);
+
+/* ---------- lights ---------- */
+scene.add(new THREE.HemisphereLight(0xdfe6f2, 0x1a1410, 0.9));
+const sun = new THREE.DirectionalLight(0xffffff, 2.4);
+sun.position.set(5, 9, 6);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 6, bottom: -4, near: 1, far: 25 });
+sun.shadow.bias = -0.0004;
+sun.shadow.radius = 4;
+scene.add(sun);
+const rim = new THREE.DirectionalLight(0x5b8cff, 1.2); rim.position.set(-6, 4, -5); scene.add(rim);
+const warm = new THREE.PointLight(0xf7871f, 2.5, 8, 2); warm.position.set(2.5, 0.6, 2.5); scene.add(warm);
+
+/* ---------- materials ---------- */
+const M = {
+  concrete: new THREE.MeshStandardMaterial({ color: 0xe4e1db, roughness: 0.82 }),
+  glass:    new THREE.MeshStandardMaterial({ color: 0x23314a, roughness: 0.12, metalness: 0.85, transparent: true, opacity: 0.94 }),
+  frame:    new THREE.MeshStandardMaterial({ color: 0x2a2e35, roughness: 0.5, metalness: 0.4 }),
+  light:    new THREE.MeshBasicMaterial({ color: 0xff9a3c, transparent: true, opacity: 0.32, blending: THREE.AdditiveBlending, depthWrite: false }),
+  white:    new THREE.MeshStandardMaterial({ color: 0xf2f3f5, roughness: 0.45 }),
+  steel:    new THREE.MeshStandardMaterial({ color: 0x8d939c, roughness: 0.35, metalness: 0.8 }),
+  dark:     new THREE.MeshStandardMaterial({ color: 0x15171b, roughness: 0.6 }),
+  blue:     new THREE.MeshStandardMaterial({ color: 0x1f6fe5, roughness: 0.35, metalness: 0.3 }),
+  yellow:   new THREE.MeshStandardMaterial({ color: 0xf9c21b, roughness: 0.35, metalness: 0.3 }),
+  red:      new THREE.MeshStandardMaterial({ color: 0xe8262b, roughness: 0.35, metalness: 0.3 }),
+  orange:   new THREE.MeshStandardMaterial({ color: 0xf7871f, roughness: 0.45, metalness: 0.2 }),
+};
+const edgeMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.14 });
+
+const box = (w, h, d, m, x = 0, y = 0, z = 0) => {
+  const o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+  o.position.set(x, y, z); return o;
+};
+const cyl = (r, h, m, x = 0, y = 0, z = 0, seg = 24) => {
+  const o = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, seg), m);
+  o.position.set(x, y, z); return o;
+};
+const edges = (mesh) => {
+  const l = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry), edgeMat);
+  mesh.add(l); return mesh;
+};
+
+/* ---------- building ---------- */
+const root = new THREE.Group();
+scene.add(root);
+
+const W = 2.4, D = 1.9, FH = 0.6, FLOORS = 6;
+const floors = [];
+const fans = [];
+const rand = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
+
+for (let i = 0; i < FLOORS; i++) {
+  const f = new THREE.Group();
+  f.position.y = 0.12 + i * FH;
+  f.add(edges(box(W + 0.14, 0.07, D + 0.14, M.concrete, 0, 0.035, 0)));
+  f.add(box(W - 0.08, FH - 0.07, D - 0.08, M.glass, 0, 0.07 + (FH - 0.07) / 2, 0));
+
+  // mullions + lit bays
+  const bays = 6, baysD = 4;
+  const addSide = (len, n, place) => {
+    for (let b = 0; b <= n; b++) {
+      const t = -len / 2 + (len / n) * b;
+      const mu = box(0.03, FH - 0.07, 0.03, M.frame);
+      place(mu, t, true); f.add(mu);
+      if (b < n && rand() < 0.16) {
+        const p = new THREE.Mesh(new THREE.PlaneGeometry(len / n - 0.06, FH - 0.16), M.light);
+        place(p, t + len / n / 2, false); f.add(p);
+      }
+    }
+  };
+  const y = 0.07 + (FH - 0.07) / 2;
+  addSide(W - 0.08, bays, (o, t, m) => { o.position.set(t, y, D / 2 - 0.04 + (m ? 0.005 : 0.003)); });
+  addSide(W - 0.08, bays, (o, t, m) => { o.position.set(t, y, -D / 2 + 0.04 - (m ? 0.005 : 0.003)); o.rotation.y = Math.PI; });
+  addSide(D - 0.08, baysD, (o, t, m) => { o.position.set(W / 2 - 0.04 + (m ? 0.005 : 0.003), y, -t); o.rotation.y = Math.PI / 2; });
+  addSide(D - 0.08, baysD, (o, t, m) => { o.position.set(-W / 2 + 0.04 - (m ? 0.005 : 0.003), y, t); o.rotation.y = -Math.PI / 2; });
+
+  // split condensers on left facade (every other floor)
+  if (i % 2 === 1) {
+    const ac = edges(box(0.14, 0.26, 0.36, M.white, -W / 2 - 0.15, y - 0.04, 0.35));
+    const grill = new THREE.Mesh(new THREE.TorusGeometry(0.085, 0.008, 8, 28), M.frame);
+    grill.rotation.y = Math.PI / 2; grill.position.set(-0.071, 0, 0.02); ac.add(grill);
+    const blades = new THREE.Group();
+    for (let k = 0; k < 3; k++) { const bl = box(0.004, 0.15, 0.03, M.frame); bl.rotation.x = (k * Math.PI * 2) / 3; blades.add(bl); }
+    blades.position.set(-0.072, 0, 0.02); ac.add(blades); fans.push({ o: blades, axis: 'x', s: 9 });
+    f.add(ac);
+  }
+  floors.push(f); root.add(f);
+}
+
+// plinth + roof
+const plinth = edges(box(W + 0.5, 0.12, D + 0.5, M.concrete, 0, 0.06, 0));
+root.add(plinth);
+const roofY = 0.12 + FLOORS * FH;
+const roof = new THREE.Group();
+roof.position.y = roofY;
+roof.add(edges(box(W + 0.14, 0.09, D + 0.14, M.concrete, 0, 0.045, 0)));
+[[0, D / 2 + 0.05, W + 0.14, 0.04], [0, -D / 2 - 0.05, W + 0.14, 0.04]].forEach(([x, z, w, d]) => roof.add(box(w, 0.12, d, M.concrete, x, 0.15, z)));
+[[W / 2 + 0.05, 0], [-W / 2 - 0.05, 0]].forEach(([x, z]) => roof.add(box(0.04, 0.12, D + 0.14, M.concrete, x, 0.15, z)));
+
+// rooftop condensers
+const rooftopAC = (x, z) => {
+  const g = new THREE.Group(); g.position.set(x, 0.09, z);
+  g.add(edges(box(0.5, 0.3, 0.38, M.white, 0, 0.15, 0)));
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.012, 8, 32), M.frame);
+  ring.rotation.x = Math.PI / 2; ring.position.y = 0.305; g.add(ring);
+  const blades = new THREE.Group(); blades.position.y = 0.31;
+  for (let k = 0; k < 4; k++) { const b = box(0.24, 0.006, 0.04, M.frame); b.rotation.y = (k * Math.PI) / 4; blades.add(b); }
+  g.add(blades); fans.push({ o: blades, axis: 'y', s: 6 + Math.random() * 3 });
+  return g;
+};
+roof.add(rooftopAC(-0.55, -0.35), rooftopAC(0.05, -0.35));
+
+// water tank
+const tank = new THREE.Group(); tank.position.set(0.72, 0.09, 0.35);
+[[-0.13, -0.13], [0.13, -0.13], [-0.13, 0.13], [0.13, 0.13]].forEach(([x, z]) => tank.add(box(0.03, 0.22, 0.03, M.steel, x, 0.11, z)));
+tank.add(edges(box(0.36, 0.03, 0.36, M.steel, 0, 0.23, 0)));
+tank.add(cyl(0.2, 0.42, M.white, 0, 0.455, 0));
+tank.add(cyl(0.202, 0.05, M.blue, 0, 0.5, 0));
+tank.add(cyl(0.12, 0.03, M.white, 0, 0.68, 0));
+roof.add(tank);
+// antenna / lightning rod
+roof.add(cyl(0.01, 0.6, M.steel, -0.9, 0.39, 0.55, 8));
+root.add(roof);
+
+// facade service pipes (right side): water / gas / electric conduit
+const services = new THREE.Group();
+const pipeH = roofY + 0.25;
+[[M.blue, 0.42], [M.yellow, 0.3], [M.red, 0.18]].forEach(([m, z], i) => {
+  const p = cyl(0.028, pipeH, m, W / 2 + 0.16, pipeH / 2, z, 16);
+  services.add(p);
+  // top elbow into roof
+  const e = cyl(0.028, 0.22, m, W / 2 + 0.06, pipeH - 0.01, z, 16); e.rotation.z = Math.PI / 2; services.add(e);
+  for (let k = 0; k < FLOORS; k++) services.add(box(0.07, 0.025, 0.07, M.frame, W / 2 + 0.16, 0.45 + k * FH, z));
+});
+// electrical panel + cones
+const panel = edges(box(0.1, 0.5, 0.38, M.dark, W / 2 + 0.12, 0.47, -0.25));
+panel.add(box(0.012, 0.42, 0.3, M.steel, 0.052, 0, 0));
+panel.add(box(0.014, 0.05, 0.3, M.orange, 0.055, 0.17, 0));
+services.add(panel);
+const cone = (x, z) => {
+  const c = new THREE.Group(); c.position.set(x, 0.12, z);
+  const k = new THREE.Mesh(new THREE.ConeGeometry(0.075, 0.24, 24), M.orange); k.position.y = 0.13; c.add(k);
+  const band = new THREE.Mesh(new THREE.CylinderGeometry(0.036, 0.048, 0.05, 24), M.white); band.position.y = 0.15; c.add(band);
+  c.add(box(0.18, 0.02, 0.18, M.orange, 0, 0.01, 0));
+  return c;
+};
+services.add(cone(W / 2 + 0.55, -0.55), cone(W / 2 + 0.5, 0.85));
+root.add(services);
+
+// scissor lift (front left)
+const lift = new THREE.Group(); lift.position.set(-W / 2 - 0.35, 0.12, D / 2 + 0.75); lift.rotation.y = 0.35;
+lift.add(edges(box(0.86, 0.12, 0.46, M.orange, 0, 0.1, 0)));
+[[-0.32, 0.24], [0.32, 0.24], [-0.32, -0.24], [0.32, -0.24]].forEach(([x, z]) => { const w = cyl(0.06, 0.05, M.dark, x, 0.06, z, 20); w.rotation.x = Math.PI / 2; lift.add(w); });
+const STAGES = 4, ARM = 0.78;
+const arms = [];
+for (let s = 0; s < STAGES; s++) for (const sign of [1, -1]) for (const zz of [0.2, -0.2]) {
+  const a = box(ARM, 0.035, 0.03, M.steel); a.userData = { s, sign }; a.position.z = zz; arms.push(a); lift.add(a);
+}
+const deck = new THREE.Group();
+deck.add(edges(box(0.92, 0.05, 0.5, M.orange, 0, 0, 0)));
+[[0, 0.24, 0.92, 0.02], [0, -0.24, 0.92, 0.02]].forEach(([x, z, w, d]) => deck.add(box(w, 0.02, d, M.steel, x, 0.32, z)));
+[[0.45, 0], [-0.45, 0]].forEach(([x, z]) => deck.add(box(0.02, 0.02, 0.5, M.steel, x, 0.32, z)));
+[[-0.45, 0.24], [0.45, 0.24], [-0.45, -0.24], [0.45, -0.24], [0, 0.24], [0, -0.24]].forEach(([x, z]) => deck.add(box(0.02, 0.32, 0.02, M.steel, x, 0.16, z)));
+// tiny technician
+const tech = new THREE.Group(); tech.position.set(0.15, 0.025, 0);
+tech.add(cyl(0.06, 0.26, M.blue, 0, 0.13, 0, 12));
+const head = new THREE.Mesh(new THREE.SphereGeometry(0.045, 16, 12), M.white); head.position.y = 0.31; tech.add(head);
+const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), M.yellow); helmet.position.y = 0.32; tech.add(helmet);
+deck.add(tech);
+lift.add(deck);
+const setLift = (h) => {
+  const step = h / STAGES, ang = Math.asin(Math.min(step / ARM, 0.98));
+  arms.forEach(a => { const { s, sign } = a.userData; a.position.x = 0; a.position.y = 0.18 + step * (s + 0.5); a.rotation.z = sign * ang; });
+  deck.position.y = 0.2 + h;
+};
+setLift(0.6);
+root.add(lift);
+
+/* ---------- ground ---------- */
+const g = document.createElement('canvas'); g.width = g.height = 512;
+const gx = g.getContext('2d');
+const grad = gx.createRadialGradient(256, 256, 0, 256, 256, 256);
+grad.addColorStop(0, 'rgba(255,255,255,.07)'); grad.addColorStop(1, 'rgba(255,255,255,0)');
+gx.fillStyle = grad; gx.fillRect(0, 0, 512, 512);
+const groundGlow = new THREE.Mesh(new THREE.CircleGeometry(3.6, 64), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(g), transparent: true, depthWrite: false }));
+groundGlow.rotation.x = -Math.PI / 2; scene.add(groundGlow);
+const shadowCatcher = new THREE.Mesh(new THREE.CircleGeometry(3.6, 64), new THREE.ShadowMaterial({ opacity: 0.45 }));
+shadowCatcher.rotation.x = -Math.PI / 2; shadowCatcher.position.y = 0.001; shadowCatcher.receiveShadow = true; scene.add(shadowCatcher);
+const rings = new THREE.Group();
+[[2.6, 0.12], [3.3, 0.07]].forEach(([r, o]) => {
+  const ring = new THREE.Mesh(new THREE.RingGeometry(r, r + 0.008, 128), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: o, depthWrite: false }));
+  ring.rotation.x = -Math.PI / 2; ring.position.y = 0.002; rings.add(ring);
+});
+// orange arc accent
+const arc = new THREE.Mesh(new THREE.RingGeometry(2.6, 2.625, 64, 1, 0, Math.PI * 0.35), new THREE.MeshBasicMaterial({ color: 0xf7871f, transparent: true, opacity: 0.85, depthWrite: false }));
+arc.rotation.x = -Math.PI / 2; arc.position.y = 0.003; rings.add(arc);
+scene.add(rings);
+
+root.traverse(o => { if (o.isMesh && o.material !== M.light) { o.castShadow = true; o.receiveShadow = true; } });
+
+/* ---------- camera / sizing ---------- */
+let camR = 16.5, camElev = 0.36, parX = 0, parY = 0, tParX = 0, tParY = 0;
+const placeCamera = () => {
+  const az = Math.PI / 4 + parX * 0.12;
+  const el2 = camElev + parY * 0.05;
+  camera.position.set(target.x + camR * Math.cos(el2) * Math.sin(az), target.y + camR * Math.sin(el2), target.z + camR * Math.cos(el2) * Math.cos(az));
+  camera.lookAt(target);
+};
+const resize = () => {
+  const w = el.clientWidth, h = el.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  // keep building framed on narrow / tall containers
+  camera.fov = w / h < 0.9 ? 34 : 28;
+  camera.updateProjectionMatrix();
+};
+new ResizeObserver(resize).observe(el);
+resize();
+
+/* ---------- interaction (horizontal drag, keeps vertical page scroll) ---------- */
+let rotY = 0, vel = 0, dragging = false, lastX = 0, lastT = 0, idle = 0;
+el.addEventListener('pointerdown', e => {
+  if (!introDone) return;
+  dragging = true; lastX = e.clientX; lastT = performance.now(); vel = 0;
+  el.classList.add('drag', 'touched'); el.setPointerCapture(e.pointerId);
+});
+el.addEventListener('pointermove', e => {
+  const r = el.getBoundingClientRect();
+  tParX = ((e.clientX - r.left) / r.width - 0.5) * 2;
+  tParY = ((e.clientY - r.top) / r.height - 0.5) * 2;
+  if (!dragging) return;
+  const now = performance.now(), dx = e.clientX - lastX;
+  rotY += dx * 0.009;
+  vel = (dx * 0.009) / Math.max(now - lastT, 8) * 16;
+  lastX = e.clientX; lastT = now; idle = 0;
+});
+const end = () => { dragging = false; el.classList.remove('drag'); };
+el.addEventListener('pointerup', end);
+el.addEventListener('pointercancel', end);
+el.addEventListener('pointerleave', () => { tParX = tParY = 0; });
+
+/* ---------- intro: build-up + one full turn ---------- */
+const INTRO = reduce ? 0 : 3.4;
+const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
+const easeOutBack = t => { const c = 1.4; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+const clamp01 = t => Math.min(Math.max(t, 0), 1);
+const popIn = [roof, services, lift];
+let introDone = reduce;
+if (introDone) el.classList.add('intro-done');
+
+/* ---------- loop ---------- */
+const clock = new THREE.Clock();
+let t0 = null, visible = true, running = false;
+const frame = () => {
+  if (!visible || document.hidden) { running = false; return; }
+  requestAnimationFrame(frame);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const now = clock.elapsedTime;
+  if (t0 === null) t0 = now;
+  const t = now - t0;
+
+  if (!introDone) {
+    const p = clamp01(t / INTRO);
+    // one full spin + dolly in
+    root.rotation.y = -Math.PI * 2 * (1 - easeOutQuart(p));
+    camR = 16.5 - 3.5 * easeOutQuart(p);
+    camElev = 0.5 - 0.14 * easeOutQuart(p);
+    plinth.scale.setScalar(easeOutQuart(clamp01(t / 0.6)));
+    floors.forEach((f, i) => {
+      const q = clamp01((t - 0.25 - i * 0.16) / 0.6);
+      f.scale.set(1, Math.max(easeOutBack(q), 0.001), 1);
+      f.visible = q > 0;
+    });
+    popIn.forEach((o, i) => {
+      const q = clamp01((t - 1.4 - i * 0.22) / 0.7);
+      const s = Math.max(easeOutBack(q), 0.001); o.scale.set(s, s, s); o.visible = q > 0;
+    });
+    rings.scale.setScalar(0.6 + 0.4 * easeOutQuart(p)); rings.children.forEach(r => r.material.opacity = r.material.userData.o * p);
+    if (p >= 1) { introDone = true; rotY = 0; el.classList.add('intro-done'); }
+  } else {
+    if (!dragging) {
+      idle += dt;
+      rotY += vel; vel *= 0.94;
+      if (!reduce && idle > 1.6 && Math.abs(vel) < 0.002) rotY += dt * 0.12 * clamp01((idle - 1.6) / 1.5);
+    }
+    root.rotation.y = rotY;
+  }
+
+  // ambient motion
+  arc.rotation.z = -root.rotation.y + Math.PI * 0.2;
+  if (!reduce) {
+    fans.forEach(f => f.o.rotation[f.axis] += dt * f.s);
+    setLift(0.75 + 0.55 * (0.5 - 0.5 * Math.cos(now * 0.45)));
+  }
+  parX += (tParX - parX) * 0.05; parY += (tParY - parY) * 0.05;
+  placeCamera();
+  renderer.render(scene, camera);
+};
+rings.children.forEach(r => r.material.userData.o = r.material.opacity);
+const start = () => { if (!running && visible && !document.hidden) { running = true; clock.getDelta(); requestAnimationFrame(frame); } };
+new IntersectionObserver(([e]) => { visible = e.isIntersecting; start(); }, { threshold: 0.01 }).observe(el);
+document.addEventListener('visibilitychange', start);
+
+// hide everything until intro starts, then fade canvas in
+if (!reduce) { floors.forEach(f => f.visible = false); popIn.forEach(o => o.visible = false); }
+placeCamera(); renderer.render(scene, camera);
+requestAnimationFrame(() => el.classList.add('ready'));
+start();
+</script>
+
+<!-- ZONA MAPA -->
+<script type="module">
+const box = document.getElementById('zmap');
+const items = [...document.querySelectorAll('.zona-list li')];
+const pt = li => [+li.dataset.lng, +li.dataset.lat];
+const BASE = pt(items[0]);
+
+// punto a d km con rumbo th (rad, 0 = norte) desde BASE
+const offset = (d, th) => [BASE[0] + d / (111.32 * Math.cos(BASE[1] * Math.PI / 180)) * Math.sin(th), BASE[1] + (d / 110.574) * Math.cos(th)];
+const circle = (d, n = 180) => Array.from({ length: n + 1 }, (_, i) => offset(d, (i / n) * Math.PI * 2));
+const curve = (a, b, n = 48) => {
+  const c = [(a[0] + b[0]) / 2 - (b[1] - a[1]) * 0.18, (a[1] + b[1]) / 2 + (b[0] - a[0]) * 0.18];
+  return Array.from({ length: n + 1 }, (_, i) => { const t = i / n, u = 1 - t; return [u * u * a[0] + 2 * u * t * c[0] + t * t * b[0], u * u * a[1] + 2 * u * t * c[1] + t * t * b[1]]; });
+};
+const line = coordinates => ({ type: 'Feature', geometry: { type: 'LineString', coordinates } });
+
+const ring50 = circle(50);
+const bounds = [
+  [Math.min(...ring50.map(p => p[0])), Math.min(...ring50.map(p => p[1]))],
+  [Math.max(...ring50.map(p => p[0])), Math.max(...ring50.map(p => p[1]))],
+];
+const pad = () => Math.round(box.clientWidth * 0.1);
+
+/* ---------- focus (lista <-> mapa) ---------- */
+let map, ready = false, focus = -1, hoverMap = -1, hoverList = -1;
+const marks = [];
+const setFocus = () => {
+  const f = hoverList >= 0 ? hoverList : hoverMap;
+  if (f === focus) return;
+  if (ready && focus > 0) map.setFeatureState({ source: 'arcs', id: focus }, { hl: false });
+  focus = f;
+  items.forEach((li, i) => li.classList.toggle('on', i === f));
+  marks.forEach((m, i) => m.classList.toggle('hl', i === f));
+  if (ready && f > 0) map.setFeatureState({ source: 'arcs', id: f }, { hl: true });
+};
+items.forEach((li, i) => {
+  const on = () => { hoverList = i; setFocus(); };
+  const off = () => { hoverList = -1; setFocus(); };
+  li.addEventListener('mouseenter', on); li.addEventListener('focus', on);
+  li.addEventListener('mouseleave', off); li.addEventListener('blur', off);
+});
+
+/* ---------- map ---------- */
+const init = () => {
+  const gl = window.maplibregl;
+  if (!gl) return;
+  map = new gl.Map({
+    container: box.querySelector('.zmap-gl'),
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+    bounds, fitBoundsOptions: { padding: pad() },
+    interactive: false, attributionControl: false, fadeDuration: 0,
+  });
+  map.on('resize', () => map.fitBounds(bounds, { padding: pad(), duration: 0 }));
+
+  map.on('load', () => {
+    // dark-matter más legible: rutas, agua y límites un poco más claros
+    map.getStyle().layers.forEach(l => {
+      try {
+        if (l.type === 'background') map.setPaintProperty(l.id, 'background-color', '#0b0c0e');
+        else if (l.type === 'line' && /road|highway|motorway|trunk|primary|secondary|tertiary|minor|street|rail|bridge|tunnel/.test(l.id))
+          map.setPaintProperty(l.id, 'line-color', /motorway|trunk|primary/.test(l.id) ? '#3d434e' : '#2a2f37');
+        else if (l.type === 'line' && /boundary/.test(l.id)) map.setPaintProperty(l.id, 'line-color', '#3a3f48');
+        else if (l.type === 'fill' && /water/.test(l.id)) map.setPaintProperty(l.id, 'fill-color', '#101a2b');
+        else if (l.type === 'line' && /waterway|river/.test(l.id)) map.setPaintProperty(l.id, 'line-color', '#17263d');
+      } catch (e) {}
+    });
+
+    map.addSource('arcs', { type: 'geojson', data: { type: 'FeatureCollection', features: items.slice(1).map((li, k) => ({ ...line(curve(BASE, pt(li))), id: k + 1 })) } });
+    const hl = ['boolean', ['feature-state', 'hl'], false];
+    map.addLayer({ id: 'arcs', type: 'line', source: 'arcs', layout: { 'line-cap': 'round' }, paint: {
+      'line-color': '#F7871F',
+      'line-width': ['case', hl, 2.2, 1.1],
+      'line-opacity': ['case', hl, 0.95, 0.4],
+    } });
+
+    items.forEach((li, i) => {
+      const left = li.dataset.side === 'l', r = i === 0 ? 5.5 : 3.5;
+      const el = document.createElement('div');
+      const m = document.createElement('div');
+      m.className = 'zmk' + (i === 0 ? ' base' : '') + (left ? ' l' : '');
+      m.style.setProperty('--d', `${0.5 + i * 0.09}s`);
+      const s = document.createElement('small');
+      s.textContent = li.querySelector('span').textContent;
+      const name = li.firstChild.textContent.trim(), dot = document.createElement('i');
+      if (left) m.append(name, s, dot); else m.append(dot, name, s);
+      el.append(m);
+      m.addEventListener('mouseenter', () => { hoverMap = i; setFocus(); });
+      m.addEventListener('mouseleave', () => { hoverMap = -1; setFocus(); });
+      new gl.Marker({ element: el, anchor: left ? 'right' : 'left', offset: [left ? r : -r, 0] }).setLngLat(pt(li)).addTo(map);
+      marks.push(m);
+    });
+
+    ready = true;
+    requestAnimationFrame(() => box.classList.add('in'));
+  });
+};
+
+new IntersectionObserver(([e], io) => {
+  if (!e.isIntersecting) return;
+  io.disconnect(); init();
+}, { rootMargin: '400px' }).observe(box);
+</script>
 
 </body>
 </html>
