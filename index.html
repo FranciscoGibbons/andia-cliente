@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANDIA Soluciones Técnicas · Salta</title>
+<meta name="description" content="Instalaciones eléctricas, sanitarias, gas, climatización y mantenimiento edilicio integral en Salta. Asesoramiento, planificación y ejecución.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b0c0e;
+  --ink-2:#111317;
+  --ink-3:#171a20;
+  --line:rgba(255,255,255,.09);
+  --line-2:rgba(255,255,255,.16);
+  --mute:#8b919c;
+  --text:#e9eaec;
+  --white:#fff;
+  --orange:#F7871F;
+  --red:#E8262B;
+  --blue:#1F6FE5;
+  --yellow:#F9C21B;
+  --tri:linear-gradient(90deg,var(--blue),var(--yellow) 34%,var(--red) 67%,var(--orange));
+  --display:"Plus Jakarta Sans",system-ui,sans-serif;
+  --body:"Plus Jakarta Sans",system-ui,sans-serif;
+  --mono:"Plus Jakarta Sans",system-ui,sans-serif;
+  --pad:clamp(16px,4vw,56px);
+  --max:1320px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--ink);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+
+/* grain + blueprint grid */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.grid-bg{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px}
+
+/* type */
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--tri);flex:none}
+.h-xl,.h-lg,.h-md{font-family:var(--display);font-stretch:118%;font-weight:850;line-height:.95;letter-spacing:-.02em;color:var(--white)}
+.h-xl{font-size:clamp(42px,6.2vw,94px)}
+.h-lg{font-size:clamp(34px,4.8vw,68px)}
+.h-md{font-size:clamp(22px,2vw,28px);line-height:1.05}
+.tri-text{background:linear-gradient(90deg,var(--yellow),var(--orange) 45%,var(--red));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(17px,1.35vw,20px);color:#c4c7cd;max-width:56ch}
+.mono{font-family:var(--mono)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-stretch:110%;font-weight:700;font-size:15px;letter-spacing:.02em;padding:16px 24px;border-radius:2px;transition:transform .2s,background .2s,box-shadow .2s;white-space:nowrap}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-wa{background:#25D366;color:#06210f;box-shadow:0 10px 30px -10px rgba(37,211,102,.6)}
+.btn-wa:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(37,211,102,.7)}
+.btn-ghost{border:1px solid var(--line-2);color:var(--white);background:rgba(255,255,255,.02)}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-sm{padding:11px 16px;font-size:13px}
+
+/* logo badge */
+.logo{display:flex;align-items:center;gap:12px}
+.logo-img{height:52px;width:auto}
+.logo-round{border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 20px 60px -20px rgba(247,135,31,.45)}
+.badge{--s:46px;width:var(--s);height:var(--s);border-radius:50%;padding:2.5px;background:conic-gradient(from 210deg,var(--orange),var(--red),var(--blue),var(--orange));flex:none;position:relative}
+.badge-in{width:100%;height:100%;border-radius:50%;background:#000;display:grid;place-items:center}
+.badge-in svg{width:56%;height:56%}
+.logo-word{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:19px;letter-spacing:.32em;color:var(--white);line-height:1}
+.logo-sub{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-top:5px}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:rgba(11,12,14,.78);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid var(--line)}
+.nav::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--tri);opacity:.55}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:76px;gap:24px}
+.nav-links{display:flex;gap:30px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#b8bcc4}
+.nav-links a:hover{color:var(--orange)}
+
+/* image frames with fallback */
+.ph{position:relative;overflow:hidden;background:
+  radial-gradient(120% 90% at 85% 10%,rgba(30,99,214,.32),transparent 55%),
+  radial-gradient(90% 80% at 10% 100%,rgba(247,148,29,.26),transparent 55%),
+  linear-gradient(160deg,#1b1f27,#0d0f12)}
+.ph::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;filter:contrast(1.06) saturate(.92) brightness(.9)}
+.ph::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(11,12,14,.12) 0%,rgba(11,12,14,.05) 30%,rgba(11,12,14,.7) 62%,rgba(11,12,14,.95) 100%)}
+.ph > .on{position:relative;z-index:3}
+
+/* HERO */
+.hero{position:relative;padding:72px 0 0;overflow:hidden}
+.hero .grid-bg{position:absolute;inset:0;mask-image:radial-gradient(80% 70% at 30% 30%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(80% 70% at 30% 30%,#000 30%,transparent 80%)}
+.hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:56px;align-items:end}
+.hero-copy{padding-bottom:64px}
+.hero h1{margin:26px 0 26px}
+.hero h1 .thin{font-weight:300;font-stretch:100%;color:#cfd2d8;display:block;font-size:.5em;letter-spacing:-.01em;margin-top:.25em}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 10px;border:1px solid var(--line-2);color:#c9ccd2;border-radius:2px}
+.hero-visual{position:relative;height:640px}
+.hv-main{position:absolute;right:0;top:0;width:86%;height:540px;clip-path:polygon(14% 0,100% 0,100% 100%,0 100%,0 14%)}
+.hv-sub{position:absolute;left:0;bottom:0;width:48%;height:250px;border:6px solid var(--ink);z-index:4}
+.hv-chip{position:absolute;right:20px;bottom:20px;z-index:4;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#fff;display:flex;gap:8px;align-items:center}
+.hv-chip i{width:8px;height:8px;border-radius:50%;background:#25D366;box-shadow:0 0 0 4px rgba(37,211,102,.25)}
+.hv-cap{position:absolute;left:18px;bottom:16px;z-index:4;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#d7d9de}
+.hv-logo{position:absolute;left:4%;top:40px;width:190px;height:190px;z-index:6;border:6px solid var(--ink);animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.stats{position:relative;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.015)}
+.stat{padding:28px 28px 26px;border-right:1px solid var(--line);position:relative}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(34px,3.6vw,52px);line-height:1;color:var(--white)}
+.stat b sup{font-size:.5em;vertical-align:.7em;color:var(--orange)}
+.stat span{display:block;margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.stat:nth-child(1)::before,.stat:nth-child(2)::before,.stat:nth-child(3)::before,.stat:nth-child(4)::before{content:"";position:absolute;left:28px;top:-1px;width:40px;height:2px}
+.stat:nth-child(1)::before{background:var(--orange)}.stat:nth-child(2)::before{background:var(--red)}.stat:nth-child(3)::before{background:var(--yellow)}.stat:nth-child(4)::before{background:var(--blue)}
+
+/* marquee */
+.ticker{overflow:hidden;border-bottom:1px solid var(--line);background:var(--ink-2)}
+.ticker-track{display:flex;width:max-content;animation:tick 38s linear infinite}
+.ticker-track span{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:22px;text-transform:uppercase;letter-spacing:.04em;padding:18px 26px;color:#2d323b;white-space:nowrap;display:flex;align-items:center;gap:26px}
+.ticker-track span::after{content:"";width:10px;height:10px;transform:rotate(45deg);background:var(--orange)}
+.ticker-track span:nth-child(3n+2)::after{background:var(--red)}
+.ticker-track span:nth-child(4n+3)::after{background:var(--blue)}
+.ticker-track span:nth-child(4n)::after{background:var(--yellow)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* sections */
+section{position:relative}
+.sec{padding:clamp(80px,10vw,140px) 0}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:56px}
+.sec-head .lead{justify-self:end}
+.sec-num{font-family:var(--mono);font-size:12px;color:var(--mute);letter-spacing:.14em}
+
+/* RUBROS */
+.rubros{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.rubro{height:460px;display:flex;flex-direction:column;justify-content:flex-end;padding:26px;border:1px solid var(--line);transition:transform .35s}
+.rubro img{transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .5s;filter:saturate(.85)}
+.rubro:hover img{transform:scale(1.06);filter:saturate(1.05)}
+.rubro .idx{position:absolute;top:22px;left:26px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#fff;opacity:.85}
+.rubro .bar{width:36px;height:3px;margin-bottom:16px}
+.rubro p{color:#c3c6cc;font-size:14.5px;margin-top:10px}
+.rubro:nth-child(1) .bar{background:var(--orange)}.rubro:nth-child(2) .bar{background:var(--red)}.rubro:nth-child(3) .bar{background:var(--yellow)}.rubro:nth-child(4) .bar{background:var(--tri)}
+.also{margin-top:22px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--mute);display:flex;flex-wrap:wrap;gap:10px 22px}
+.also b{color:var(--text);font-weight:500}
+
+/* SERVICIOS */
+.serv-sec{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.servicios{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-2);border-left:1px solid var(--line-2)}
+.serv{position:relative;padding:38px 34px 34px;border-right:1px solid var(--line-2);border-bottom:1px solid var(--line-2);min-height:340px;display:flex;flex-direction:column;transition:background .3s}
+.serv::before{content:"";position:absolute;left:-1px;top:-1px;height:3px;width:0;background:var(--c,var(--orange));transition:width .45s cubic-bezier(.2,.7,.2,1)}
+.serv:hover{background:rgba(255,255,255,.025)}
+.serv:hover::before{width:calc(100% + 2px)}
+.serv-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:34px}
+.serv-ico{width:54px;height:54px;border:1px solid var(--line-2);display:grid;place-items:center;color:var(--c,var(--orange))}
+.serv-ico svg{width:26px;height:26px}
+.serv .sec-num{font-size:11px}
+.serv h3{margin-bottom:12px}
+.serv p{color:#aeb2ba;font-size:15px}
+.serv ul{list-style:none;margin-top:auto;padding-top:22px;display:flex;flex-wrap:wrap;gap:6px}
+.serv li{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;background:rgba(255,255,255,.04);color:#c7cad0;border-radius:2px}
+.claim{margin-top:56px;display:grid;grid-template-columns:auto 1fr 38%;gap:28px;align-items:center;padding:0 0 0 34px;border:1px solid var(--line-2);background:linear-gradient(90deg,rgba(247,135,31,.08),rgba(31,111,229,.06));overflow:hidden}
+.claim-img{align-self:stretch;min-height:220px}
+.claim-img::after{background:linear-gradient(90deg,rgba(17,19,23,1) 0%,rgba(17,19,23,0) 35%)}
+.claim-img img{object-position:center;filter:none}
+.claim q{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:clamp(20px,2.2vw,30px);line-height:1.15;color:var(--white);quotes:none}
+.claim .iso{width:72px;height:72px}
+
+/* PROCESO */
+.proceso{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;counter-reset:p}
+.proceso::before{content:"";position:absolute;left:0;right:0;top:35px;height:2px;background:var(--tri);opacity:.9}
+.paso{padding-right:30px;position:relative}
+.paso .dot{width:72px;height:72px;border-radius:50%;background:var(--ink);border:2px solid var(--line-2);display:grid;place-items:center;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:22px;color:var(--white);position:relative;z-index:1;margin-bottom:30px}
+.paso:nth-child(1) .dot{border-color:var(--orange)}.paso:nth-child(2) .dot{border-color:var(--red)}.paso:nth-child(3) .dot{border-color:var(--yellow)}.paso:nth-child(4) .dot{border-color:var(--blue)}
+.paso h3{margin-bottom:12px}
+.paso p{color:#aeb2ba;font-size:15px;max-width:30ch}
+.paso .k{display:block;margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+
+/* OBRAS */
+.obras{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:280px;gap:14px}
+.obra{display:flex;flex-direction:column;justify-content:flex-end;padding:26px;border:1px solid var(--line)}
+.obra img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.obra:hover img{transform:scale(1.05)}
+.obra.a{grid-column:span 7;grid-row:span 2}
+.obra.b{grid-column:span 5}
+.obra.c{grid-column:span 5}
+.obra.d{grid-column:span 4}
+.obra.e{grid-column:span 4}
+.obra.f{grid-column:span 4}
+.obra .cat{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#fff;padding:6px 9px;background:rgba(0,0,0,.55);border:1px solid var(--line-2);margin-bottom:14px;backdrop-filter:blur(6px)}
+.obra .cat i{width:7px;height:7px;border-radius:50%;background:var(--c,var(--orange))}
+.obra h3{font-family:var(--display);font-stretch:112%;font-weight:800;font-size:clamp(20px,1.8vw,26px);line-height:1.08;color:#fff}
+.obra.a h3{font-size:clamp(26px,2.8vw,40px)}
+.obra p{color:#c9ccd2;font-size:14px;margin-top:8px;max-width:52ch}
+.obra .spec{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font-family:var(--mono);font-size:11px;color:#9ea3ac;letter-spacing:.06em}
+.obra .spec span::before{content:"+ ";color:var(--orange)}
+
+/* CONFIANZA */
+.trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-2)}
+.trust .wrap{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:center;padding-top:44px;padding-bottom:44px}
+.trust-list{display:flex;flex-wrap:wrap;gap:12px}
+.chip{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1px solid var(--line-2);background:rgba(255,255,255,.02)}
+.chip b{font-family:var(--display);font-stretch:118%;font-weight:800;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:#fff}
+.chip small{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.chip.star{border-color:rgba(247,148,29,.5);background:linear-gradient(90deg,rgba(247,148,29,.12),transparent)}
+.chip .s{color:var(--orange);font-size:16px}
+
+/* ZONA */
+.zona-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:64px;align-items:center}
+.zona-list{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.zona-list li{list-style:none;padding:14px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px;letter-spacing:.04em;display:flex;justify-content:space-between;padding-right:18px;color:#d6d8dc}
+.zona-list li span{color:var(--mute)}
+.radar{position:relative;aspect-ratio:1;max-width:560px;width:100%;justify-self:end;border:1px solid var(--line);background:radial-gradient(circle at 50% 50%,rgba(30,99,214,.12),transparent 60%),var(--ink-2)}
+.radar svg{position:absolute;inset:0;width:100%;height:100%}
+.radar .sweep{position:absolute;inset:8%;border-radius:50%;background:conic-gradient(from 0deg,rgba(247,148,29,.28),transparent 22%);animation:spin 7s linear infinite}
+.radar .corner{position:absolute;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+
+/* CONTACTO */
+.contacto{padding:clamp(80px,10vw,130px) 0;position:relative;overflow:hidden;border-top:1px solid var(--line)}
+.contacto .glow{position:absolute;inset:auto -10% -60% -10%;height:120%;background:radial-gradient(50% 50% at 30% 50%,rgba(247,148,29,.22),transparent 70%),radial-gradient(45% 50% at 75% 50%,rgba(30,99,214,.22),transparent 70%);pointer-events:none}
+.contact-box{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:center}
+.contact-box .h-xl{font-size:clamp(40px,5.4vw,84px)}
+.cards{display:grid;gap:12px}
+.ccard{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:16px;padding:18px 20px;border:1px solid var(--line-2);background:rgba(11,12,14,.6);backdrop-filter:blur(8px);transition:border-color .2s,transform .2s}
+.ccard:hover{transform:translateX(4px)}
+.ccard .ci{width:52px;height:52px;display:grid;place-items:center;border-radius:50%}
+.ccard .ci svg{width:24px;height:24px}
+.ccard b{display:block;font-family:var(--display);font-stretch:112%;font-weight:700;color:#fff;font-size:17px}
+.ccard small{font-family:var(--mono);font-size:12px;color:var(--mute);letter-spacing:.04em}
+.ccard .arr{font-family:var(--mono);color:var(--mute)}
+.ccard.wa{border-color:rgba(37,211,102,.5)} .ccard.wa .ci{background:#25D366;color:#06210f}
+.ccard.ig .ci{background:linear-gradient(45deg,var(--orange),var(--red),#a03ad6);color:#fff}
+.ccard.yt .ci{background:#e62117;color:#fff}
+.ccard.wa:hover{border-color:#25D366}.ccard.ig:hover{border-color:var(--red)}.ccard.yt:hover{border-color:#e62117}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:48px 0 34px;background:#08090a}
+.foot{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:40px}
+.foot h4{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:14px;font-weight:500}
+.foot ul{list-style:none;display:grid;gap:8px;font-size:14.5px;color:#c4c7cd}
+.foot p{color:#9aa0a9;font-size:14px;margin-top:18px;max-width:40ch}
+.legal{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:#6c727c;text-transform:uppercase}
+
+/* floating WA */
+.fab{position:fixed;right:22px;bottom:22px;z-index:60;width:62px;height:62px;border-radius:50%;background:#25D366;display:grid;place-items:center;color:#06210f;box-shadow:0 14px 34px -8px rgba(37,211,102,.65)}
+.fab svg{width:30px;height:30px}
+.fab::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(37,211,102,.5);animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.9);opacity:1}100%{transform:scale(1.35);opacity:0}}
+
+/* load reveal */
+.rv{opacity:0;transform:translateY(22px);animation:up .9s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes up{to{opacity:1;transform:none}}
+.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}.d4{animation-delay:.42s}.d5{animation-delay:.55s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+
+/* RESPONSIVE */
+@media (max-width:1100px){
+  .claim{grid-template-columns:auto 1fr;padding:30px 30px 0}
+  .claim-img{grid-column:1/-1;margin:0 -30px;min-height:240px}
+  .claim-img::after{background:linear-gradient(180deg,rgba(17,19,23,1) 0%,rgba(17,19,23,0) 30%)}
+  .nav-links{display:none}
+  .hero-grid{grid-template-columns:1fr;gap:10px}
+  .hero-copy{padding-bottom:20px}
+  .hero-visual{height:520px}
+  .hv-main{height:440px}
+  .rubros{grid-template-columns:repeat(2,1fr)}
+  .rubro{height:380px}
+  .servicios{grid-template-columns:repeat(2,1fr)}
+  .proceso{grid-template-columns:repeat(2,1fr);row-gap:48px}
+  .proceso::before{display:none}
+  .obras{grid-template-columns:repeat(2,1fr);grid-auto-rows:300px}
+  .obra.a,.obra.b,.obra.c,.obra.d,.obra.e,.obra.f{grid-column:span 1;grid-row:span 1}
+  .obra.a{grid-column:span 2;grid-row:span 1}
+  .zona-grid,.contact-box{grid-template-columns:1fr}
+  .radar{justify-self:start}
+  .trust .wrap{grid-template-columns:1fr;gap:22px}
+  .foot{grid-template-columns:1fr 1fr}
+  .foot > div:first-child{grid-column:span 2}
+}
+@media (max-width:640px){
+  .nav .wrap{height:66px}
+  .logo-img{height:40px}
+  .logo-word{font-size:16px;letter-spacing:.26em}
+  .logo-sub{font-size:8.5px;letter-spacing:.12em}
+  .nav .btn-sm span{display:none}
+  .nav .btn-sm{padding:11px 12px}
+  .hero{padding-top:44px}
+  .hero h1{margin:20px 0}
+  .hero-cta .btn{flex:1 1 100%;justify-content:center}
+  .hero-visual{height:400px}
+  .hv-main{width:100%;height:320px}
+  .hv-sub{width:58%;height:160px;border-width:5px}
+  .hv-logo{width:120px;height:120px;left:auto;right:12px;top:auto;bottom:120px;border-width:4px}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat{padding:22px 18px}
+  .stat:nth-child(2){border-right:0}
+  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}
+  .stat::before{left:18px!important}
+  .ticker-track span{font-size:17px;padding:14px 18px;gap:18px}
+  .sec-head{grid-template-columns:1fr;gap:18px;margin-bottom:36px}
+  .sec-head .lead{justify-self:start}
+  .rubros{grid-template-columns:1fr}
+  .rubro{height:320px}
+  .servicios{grid-template-columns:1fr}
+  .serv{min-height:0;padding:30px 22px}
+  .serv-top{margin-bottom:24px}
+  .claim{grid-template-columns:1fr;padding:24px 22px 0;gap:18px}
+  .claim-img{margin:0 -22px;min-height:190px}
+  .claim-img::after{background:linear-gradient(180deg,rgba(17,19,23,1) 0%,rgba(17,19,23,0) 30%)}
+  .proceso{grid-template-columns:1fr;row-gap:0}
+  .proceso::before{display:block;left:35px;right:auto;top:0;bottom:0;width:2px;height:auto;background:linear-gradient(180deg,var(--orange),var(--red),var(--blue))}
+  .paso{display:grid;grid-template-columns:72px 1fr;column-gap:20px;padding:0 0 36px}
+  .paso .dot{margin:0;grid-row:span 3}
+  .obras{grid-template-columns:1fr;grid-auto-rows:minmax(340px,auto)}
+  .obra.a{grid-column:span 1;grid-row:span 1;min-height:440px}
+  .obra.a h3{font-size:26px}
+  .obra{padding:20px}
+  .zona-list{grid-template-columns:1fr}
+  .ccard{grid-template-columns:46px 1fr auto;padding:14px}
+  .ccard .ci{width:46px;height:46px}
+  .foot{grid-template-columns:1fr}
+  .foot > div:first-child{grid-column:span 1}
+  .legal{flex-direction:column}
+  .fab{width:56px;height:56px;right:16px;bottom:16px}
+}
+
+/* ===== versión tranqui ===== */
+body::before{display:none}
+.grid-bg{background:none!important}
+.h-xl,.h-lg,.h-md,.btn,.logo-word,.stat b,.ticker-track span{font-stretch:100%!important}
+.h-xl,.h-lg,.h-md{font-weight:700;letter-spacing:-.025em;line-height:1.1}
+.h-xl{font-size:clamp(36px,4.4vw,60px)}
+.h-lg{font-size:clamp(30px,3.4vw,46px)}
+.h-md{font-size:clamp(20px,1.7vw,24px);line-height:1.2}
+.eyebrow,.nav-links,.tag,.stat span,.idx,.sec-num,.hv-chip,.hv-cap,.radar .corner,[class*="mono"],.mono{text-transform:none!important;letter-spacing:0!important}
+.eyebrow{font-size:14px;font-weight:600;color:var(--orange)}
+.eyebrow::before{display:none}
+.nav-links{font-size:15px;font-weight:500}
+.idx,.sec-num{display:none!important}
+.btn{border-radius:10px;font-weight:600;letter-spacing:0}
+.tag{border-radius:999px}
+.ph{border-radius:14px;overflow:hidden}
+.radar .sweep{display:none}
+.hero{padding:88px 0 0}
+.hero h1{margin:18px 0 22px;max-width:16ch}
+.hero-grid{align-items:center;gap:64px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.hero-copy{padding-bottom:0}
+.hero-visual{height:auto}
+.hv-main{position:relative;width:100%;height:520px;clip-path:none;border-radius:18px}
+.hv-main::after{background:none!important}
+.stats{grid-template-columns:repeat(3,1fr);margin-top:72px;background:none;border-bottom:0}
+.stat::before{display:none!important}
+.stat b{font-size:clamp(26px,2.4vw,34px);font-weight:700}
+.stat span{font-size:15px;color:var(--mute)}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px}.hv-main{height:380px}}
+@media (max-width:600px){.hero{padding-top:48px}.hv-main{height:300px}.stats{grid-template-columns:1fr;margin-top:40px}.stat{border-right:0;border-bottom:1px solid var(--line);padding:18px 0}.stat:last-child{border-bottom:0}}
+
+.logo-sub,.serv li,.paso .k,.obra .cat,.chip b,.chip small,.foot h4,.legal{text-transform:none!important;letter-spacing:0!important;font-stretch:100%!important}
+.serv li{font-size:13px;border-radius:999px;padding:5px 11px}
+.paso .k,.obra .cat,.chip small{font-size:13px}
+.chip b{font-size:16px;font-weight:700}
+.foot h4{font-size:14px;font-weight:600}
+.hero h1{max-width:18ch;font-size:clamp(34px,3.9vw,54px)}
+
+.hero h1 .tri-text{font-weight:800}
+.hv-main::after{background:linear-gradient(180deg,transparent 55%,rgba(11,12,14,.85))!important}
+.hero-cap{position:absolute;left:22px;right:22px;bottom:20px;z-index:4;display:flex;flex-direction:column;gap:2px}
+.hero-cap span{font-size:13px;color:var(--orange);font-weight:600}
+.hero-cap b{font-size:17px;color:#fff;font-weight:600}
+
+.ph > .hero-cap.on{position:absolute!important;left:18px;right:auto;bottom:18px;top:auto;background:rgba(11,12,14,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:12px 16px;border-radius:12px;border:1px solid var(--line-2)}
+</style>
+</head>
+<body>
+
+<!-- SVG sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g-tri" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1F6FE5"/><stop offset=".33" stop-color="#F9C21B"/><stop offset=".66" stop-color="#E8262B"/><stop offset="1" stop-color="#F7871F"/></linearGradient>
+  </defs>
+  <symbol id="i-mark" viewBox="0 0 48 48">
+    <path d="M24 5 L8 41" stroke="#F7871F" stroke-width="7" stroke-linecap="square" fill="none"/>
+    <path d="M24 5 L40 41" stroke="#1F6FE5" stroke-width="7" stroke-linecap="square" fill="none"/>
+    <path d="M15 30 H33" stroke="#E8262B" stroke-width="6" fill="none"/>
+    <circle cx="24" cy="5" r="3.6" fill="#fff"/>
+  </symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.48-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.27.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.31l-.34-.2-3.57.93.95-3.48-.22-.36A9.43 9.43 0 1 1 12.05 21.5zm8.02-17.45A11.27 11.27 0 0 0 1.82 17.66L.22 23.5l5.97-1.57a11.25 11.25 0 0 0 5.85 1.63h.01A11.28 11.28 0 0 0 20.07 4.05z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M7 2.5h10A4.5 4.5 0 0 1 21.5 7v10a4.5 4.5 0 0 1-4.5 4.5H7A4.5 4.5 0 0 1 2.5 17V7A4.5 4.5 0 0 1 7 2.5z"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></symbol>
+  <symbol id="i-yt" viewBox="0 0 24 24"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.4-1.6.5-4.8.5-4.8s0-3.2-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></symbol>
+</svg>
+
+<!-- NAV -->
+<header class="nav" id="top">
+  <div class="wrap">
+    <a href="#inicio" class="logo" aria-label="ANDIA Soluciones Técnicas">
+      <img class="logo-img" src="assets/logo-wordmark-transparente.png" alt="ANDIA Soluciones Técnicas" width="730" height="320">
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="#rubros">Rubros</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#proceso">Cómo trabajamos</a>
+      <a href="#obras">Obras</a>
+      <a href="#zona">Zona</a>
+    </nav>
+    <a href="#contacto" class="btn btn-wa btn-sm"><svg><use href="#i-wa"/></svg><span>Escribinos por WhatsApp</span></a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow rv d1">Salta · Instalaciones y mantenimiento</div>
+        <h1 class="h-xl rv d2">Soluciones técnicas para tu <span class="tri-text">casa, comercio o empresa.</span></h1>
+        <p class="lead rv d3">Electricidad, plomería, gas, climatización y mantenimiento edilicio. Un solo equipo, desde el presupuesto hasta que todo queda funcionando.</p>
+        <div class="hero-cta rv d4">
+          <a href="#contacto" class="btn btn-wa"><svg><use href="#i-wa"/></svg>Pedí tu presupuesto</a>
+          <a href="#servicios" class="btn btn-ghost">Ver servicios</a>
+        </div>
+      </div>
+      <div class="hero-visual rv d3">
+        <div class="ph hv-main">
+          <img src="assets/obra-7.jpg" alt="Clínica Güemes, cliente de mantenimiento integral de ANDIA" onerror="this.remove()" style="object-position:center 35%">
+          <div class="hero-cap on"><span>Cliente</span><b>Clínica Güemes · Mantenimiento integral</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>+10 años</b><span>trabajando en Salta</span></div>
+      <div class="stat"><b>+400</b><span>trabajos realizados</span></div>
+      <div class="stat"><b>Urgencias</b><span>respuesta rápida</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- RUBROS -->
+<section class="sec" id="rubros">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">A quién le trabajamos</div>
+        <h2 class="h-lg" style="margin-top:20px">Un equipo técnico para cada tipo de espacio.</h2>
+      </div>
+      <p class="lead">Nos adaptamos a los horarios y a la dinámica de cada lugar: planta, campo, local o casa. Trabajamos ordenados, con seguridad y dejando todo funcionando.</p>
+    </div>
+    <div class="rubros">
+      <article class="ph rubro">
+        <img src="assets/obra-4.jpg" alt="Nave industrial con plataforma tijera" onerror="this.remove()">
+        <span class="idx">R/01</span>
+        <div class="on"><div class="bar"></div><h3 class="h-md">Empresas e Industria</h3><p>Mantenimiento preventivo y correctivo, tableros, redes de agua y climatización de plantas y oficinas.</p></div>
+      </article>
+      <article class="ph rubro">
+        <img src="assets/obra-5.jpg" alt="Plataforma tijera en galpón" onerror="this.remove()">
+        <span class="idx">R/02</span>
+        <div class="on"><div class="bar"></div><h3 class="h-md">Campo</h3><p>Galpones y tinglados, bombas de impulsión, tanques, cubiertas y electricidad para establecimientos agropecuarios.</p></div>
+      </article>
+      <article class="ph rubro">
+        <img src="assets/obra-11.jpg" alt="Técnico en andamio instalando un split en un local" onerror="this.remove()">
+        <span class="idx">R/03</span>
+        <div class="on"><div class="bar"></div><h3 class="h-md">Comercio</h3><p>Locales, oficinas y clínicas: trabajamos fuera de horario para no frenar tu atención al público.</p></div>
+      </article>
+      <article class="ph rubro">
+        <img src="assets/obra-10.jpg" alt="Piscina con hidromasaje en vivienda" onerror="this.remove()">
+        <span class="idx">R/04</span>
+        <div class="on"><div class="bar"></div><h3 class="h-md">Hogares y Consorcios</h3><p>Obras nuevas, refacciones, gas, agua caliente, splits y mantenimiento de espacios comunes.</p></div>
+      </article>
+    </div>
+    <div class="also"><span><b>También:</b> clínicas y centros de salud</span><span>· edificios gremiales e institucionales</span><span>· piscinas</span></div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="sec serv-sec" id="servicios">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Servicios</div>
+        <h2 class="h-lg" style="margin-top:20px">Todo lo técnico, <span class="tri-text">bajo un mismo techo.</span></h2>
+      </div>
+      <p class="lead">Un solo interlocutor para todas las instalaciones de tu espacio. Menos coordinación, menos demoras y un responsable claro de principio a fin.</p>
+    </div>
+    <div class="servicios">
+      <article class="serv" style="--c:var(--orange)">
+        <div class="serv-top"><div class="serv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg></div><span class="sec-num">S/01</span></div>
+        <h3 class="h-md">Electricidad</h3>
+        <p>Instalaciones eléctricas nuevas y adecuaciones, tableros, circuitos, iluminación y mantenimiento.</p>
+        <ul><li>Tableros</li><li>Cableado</li><li>Iluminación</li><li>Adecuaciones</li></ul>
+      </article>
+      <article class="serv" style="--c:var(--blue)">
+        <div class="serv-top"><div class="serv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/><path d="M9.5 15a2.5 2.5 0 0 0 2.5 2.5"/></svg></div><span class="sec-num">S/02</span></div>
+        <h3 class="h-md">Instalaciones sanitarias</h3>
+        <p>Agua fría y caliente, desagües, cloaca y pluviales. Tanques elevados y bombas de impulsión.</p>
+        <ul><li>Agua fría/caliente</li><li>Cloaca</li><li>Pluviales</li><li>Tanques y bombas</li></ul>
+      </article>
+      <article class="serv" style="--c:var(--red)">
+        <div class="serv-top"><div class="serv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 2c1 4 5 5.5 5 11a5 5 0 0 1-10 0c0-2.5 1.2-4 2.5-5 0 2 1 3 2 3 0-3-1-5.5.5-9z"/></svg></div><span class="sec-num">S/03</span></div>
+        <h3 class="h-md">Gas</h3>
+        <p>Instalación de gas completa, ventilaciones reglamentarias, conexión de artefactos y control de pérdidas.</p>
+        <ul><li>Red completa</li><li>Ventilaciones</li><li>Artefactos</li><li>Pruebas</li></ul>
+      </article>
+      <article class="serv" style="--c:var(--blue)">
+        <div class="serv-top"><div class="serv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/><path d="M9.5 3.5 12 6l2.5-2.5M9.5 20.5 12 18l2.5 2.5"/></svg></div><span class="sec-num">S/04</span></div>
+        <h3 class="h-md">Climatización y calefacción</h3>
+        <p>Instalación de splits, mantenimiento y sanitización: filtros, turbinas e intercambiador. Instaladores York e Hitachi.</p>
+        <ul><li>Splits</li><li>Sanitización</li><li>Calefacción</li><li>Piscinas</li></ul>
+      </article>
+      <article class="serv" style="--c:var(--orange)">
+        <div class="serv-top"><div class="serv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/><path d="M3 21h18"/></svg></div><span class="sec-num">S/05</span></div>
+        <h3 class="h-md">Mantenimiento edilicio</h3>
+        <p>Mantenimiento integral: agua y desagües, climatización, gas, pintura, impermeabilización, mampostería y reparaciones generales.</p>
+        <ul><li>Preventivo</li><li>Pintura</li><li>Impermeabilización</li><li>Mampostería</li></ul>
+      </article>
+      <article class="serv" style="--c:var(--red)">
+        <div class="serv-top"><div class="serv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 21h14M7 21v-3h10v3"/><path d="M7 18 17 8M17 18 7 8"/><path d="M6 8h12V5H6z"/></svg></div><span class="sec-num">S/06</span></div>
+        <h3 class="h-md">Trabajo en altura</h3>
+        <p>Izaje, plataforma móvil tipo tijera, limpieza de canaletas, bajadas pluviales y reparación de cubiertas.</p>
+        <ul><li>Plataforma tijera</li><li>Izaje</li><li>Canaletas</li><li>Cubiertas</li></ul>
+      </article>
+    </div>
+    <div class="claim">
+      <img class="iso logo-round" src="assets/isotipo.png" alt="">
+      <q>Asesoramiento, planificación y ejecución: un solo equipo para todo.</q>
+      <div class="ph claim-img"><img src="assets/obra-6.jpg" alt="Herramientas de trabajo de ANDIA" onerror="this.remove()"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section class="sec" id="proceso">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Cómo trabajamos</div>
+        <h2 class="h-lg" style="margin-top:20px">Asesoramiento, planificación y ejecución.</h2>
+      </div>
+      <p class="lead">Un método simple y claro, para que sepas qué se hace, cuándo y cuánto cuesta, antes de arrancar.</p>
+    </div>
+    <div class="proceso">
+      <div class="paso"><div class="dot">01</div><h3 class="h-md">Asesoramiento</h3><p>Visitamos el lugar, escuchamos la necesidad y te recomendamos la solución técnica adecuada.</p><span class="k">Relevamiento en sitio</span></div>
+      <div class="paso"><div class="dot">02</div><h3 class="h-md">Planificación</h3><p>Presupuesto detallado, materiales y un cronograma pensado para no frenar tu actividad.</p><span class="k">Presupuesto + plazos</span></div>
+      <div class="paso"><div class="dot">03</div><h3 class="h-md">Ejecución</h3><p>Equipo propio, herramientas profesionales y normas de seguridad. Dejamos todo limpio y probado.</p><span class="k">Obra y puesta en marcha</span></div>
+      <div class="paso"><div class="dot">04</div><h3 class="h-md">Mantenimiento</h3><p>Planes preventivos periódicos para que tus instalaciones sigan rindiendo y evites urgencias.</p><span class="k">Seguimiento continuo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- OBRAS -->
+<section class="sec serv-sec" id="obras">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Obras destacadas</div>
+        <h2 class="h-lg" style="margin-top:20px">Trabajos que hablan por nosotros.</h2>
+      </div>
+      <p class="lead">Una selección de proyectos recientes en clínicas, edificios institucionales, viviendas e instalaciones especiales en Salta.</p>
+    </div>
+    <div class="obras">
+      <article class="ph obra a">
+        <img src="assets/obra-7.jpg" alt="Fachada de Clínica Güemes" onerror="this.remove()" style="object-position:center 80%">
+        <div class="on">
+          <span class="cat" style="--c:var(--orange)"><i></i>Salud · Mantenimiento integral</span>
+          <h3>Mantenimiento edilicio integral — Clínica Güemes</h3>
+          <p>Servicio continuo sobre agua y desagües, climatización, gas, pintura y reparaciones generales, coordinado para no afectar la atención de pacientes.</p>
+          <div class="spec"><span>Sanitarias</span><span>Climatización</span><span>Gas</span><span>Pintura</span></div>
+        </div>
+      </article>
+      <article class="ph obra b">
+        <img src="assets/obra-12.jpg" alt="Edificio Sindicato de Telecomunicaciones en obra" onerror="this.remove()" style="object-position:center 65%">
+        <div class="on">
+          <span class="cat" style="--c:var(--blue)"><i></i>Institucional · Obra completa</span>
+          <h3>Edificio Sindicato de Telecomunicaciones</h3>
+          <div class="spec"><span>Gas completo</span><span>Cloaca</span><span>Red de agua</span><span>Tanques y bombas</span></div>
+        </div>
+      </article>
+      <article class="ph obra c">
+        <img src="assets/obra-2.jpg" alt="Equipo split abierto durante mantenimiento" onerror="this.remove()">
+        <div class="on">
+          <span class="cat" style="--c:var(--red)"><i></i>Salud · Climatización</span>
+          <h3>Clínica privada — 4 equipos split</h3>
+          <div class="spec"><span>Instalación</span><span>Sanitización</span><span>Filtros y turbinas</span></div>
+        </div>
+      </article>
+      <article class="ph obra d">
+        <img src="assets/obra-1.jpg" alt="Obra nueva en construcción" onerror="this.remove()">
+        <div class="on">
+          <span class="cat" style="--c:var(--yellow)"><i></i>Residencial · Obra nueva</span>
+          <h3>Instalación sanitaria domiciliaria desde cero</h3>
+          <div class="spec"><span>Agua</span><span>Desagües</span><span>Gas</span></div>
+        </div>
+      </article>
+      <article class="ph obra e">
+        <img src="assets/obra-9.jpg" alt="Casona residencial con quincho y piscina" onerror="this.remove()" style="object-position:center 70%">
+        <div class="on">
+          <span class="cat" style="--c:var(--blue)"><i></i>Residencial · Piscinas</span>
+          <h3>Bombas para quincho, hidromasaje y piscina</h3>
+          <div class="spec"><span>Impulsión</span><span>Puesta en marcha</span></div>
+        </div>
+      </article>
+      <article class="ph obra f">
+        <img src="assets/obra-3.jpg" alt="Filtros de split durante la sanitización" onerror="this.remove()">
+        <div class="on">
+          <span class="cat" style="--c:var(--red)"><i></i>Climatización</span>
+          <h3>Sanitización de equipos split</h3>
+          <div class="spec"><span>Filtros</span><span>Turbinas</span><span>Intercambiador</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIANZA -->
+<section class="trust" id="confianza">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Confían en nosotros</div>
+    </div>
+    <div class="trust-list">
+      <div class="chip star"><span class="s">★</span><div><b>YORK Latinoamérica</b><br><small>Reconocimiento</small></div></div>
+      <div class="chip"><div><b>Clínica Güemes</b><br><small>Mantenimiento integral</small></div></div>
+      <div class="chip"><div><b>Sindicato Telecomunicaciones</b><br><small>Obra junto a RAC</small></div></div>
+      <div class="chip"><div><b>York · Hitachi</b><br><small>Instaladores</small></div></div>
+      <div class="chip"><div><b>Clínicas privadas</b><br><small>Climatización</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ZONA -->
+<section class="sec" id="zona">
+  <div class="wrap">
+    <div class="zona-grid">
+      <div>
+        <div class="eyebrow">Zona de cobertura</div>
+        <h2 class="h-lg" style="margin-top:20px">Salta capital <span class="tri-text">y alrededores.</span></h2>
+        <p class="lead" style="margin-top:22px">Base en la ciudad de Salta, con traslado a localidades cercanas y establecimientos rurales. ¿Tu obra está más lejos? Consultanos igual.</p>
+        <ul class="zona-list">
+          <li>Salta Capital <span>Base</span></li>
+          <li>San Lorenzo <span>~10 km</span></li>
+          <li>Vaqueros <span>~12 km</span></li>
+          <li>Cerrillos <span>~15 km</span></li>
+          <li>La Caldera <span>~20 km</span></li>
+          <li>Rosario de Lerma <span>~33 km</span></li>
+          <li>Campo Quijano <span>~35 km</span></li>
+          <li>Gral. Güemes <span>~50 km</span></li>
+        </ul>
+      </div>
+      <div class="radar" aria-label="Mapa esquemático de cobertura">
+        <div class="sweep"></div>
+        <svg viewBox="0 0 400 400" fill="none">
+          <g stroke="rgba(255,255,255,.12)">
+            <circle cx="200" cy="200" r="46"/><circle cx="200" cy="200" r="94"/><circle cx="200" cy="200" r="142" stroke-dasharray="3 5"/><circle cx="200" cy="200" r="184" stroke="url(#g-tri)" stroke-width="1.5"/>
+            <path d="M200 10v380M10 200h380" stroke-dasharray="2 6"/>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#c9ccd2" letter-spacing=".5">
+            <circle cx="200" cy="200" r="7" fill="#F7871F"/><circle cx="200" cy="200" r="14" stroke="#F7871F" stroke-opacity=".5"/>
+            <text x="214" y="196" fill="#fff" font-size="12" font-weight="700">SALTA</text>
+            <circle cx="166" cy="178" r="4" fill="#E8262B"/><text x="100" y="172">SAN LORENZO</text>
+            <circle cx="205" cy="140" r="4" fill="#E8262B"/><text x="214" y="138">VAQUEROS</text>
+            <circle cx="215" cy="88" r="4" fill="#1F6FE5"/><text x="224" y="86">LA CALDERA</text>
+            <circle cx="190" cy="262" r="4" fill="#E8262B"/><text x="200" y="266">CERRILLOS</text>
+            <circle cx="110" cy="276" r="4" fill="#1F6FE5"/><text x="62" y="296">R. DE LERMA</text>
+            <circle cx="92" cy="250" r="4" fill="#1F6FE5"/><text x="30" y="242">C. QUIJANO</text>
+            <circle cx="300" cy="74" r="4" fill="#1F6FE5"/><text x="276" y="62">GÜEMES</text>
+          </g>
+        </svg>
+        <span class="corner" style="left:14px;top:12px">24°47′S · 65°24′O</span>
+        <span class="corner" style="right:14px;bottom:12px">Radio ~50 km</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="contact-box">
+      <div>
+        <div class="eyebrow">Contacto</div>
+        <h2 class="h-xl" style="margin-top:22px">¿Tenés una obra o una urgencia? <span class="tri-text">Contactanos.</span></h2>
+        <p class="lead" style="margin-top:24px">Contanos qué necesitás y coordinamos una visita. Te respondemos rápido por WhatsApp con un presupuesto claro y sin vueltas.</p>
+      </div>
+      <div class="cards">
+        <a class="ccard wa" href="#contacto"><span class="ci"><svg><use href="#i-wa"/></svg></span><span><b>Pedí tu presupuesto</b><small>WhatsApp · +54 9 387 XXX-XXXX</small></span><span class="arr">→</span></a>
+        <a class="ccard ig" href="https://instagram.com/andiasoltec" target="_blank" rel="noopener"><span class="ci"><svg><use href="#i-ig"/></svg></span><span><b>Seguinos en Instagram</b><small>@andiasoltec · +400 publicaciones</small></span><span class="arr">→</span></a>
+        <a class="ccard yt" href="https://youtube.com/@andiasolucionestecnicas" target="_blank" rel="noopener"><span class="ci"><svg><use href="#i-yt"/></svg></span><span><b>Mirá nuestros trabajos</b><small>YouTube · @andiasolucionestecnicas</small></span><span class="arr">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="#inicio" class="logo">
+          <img class="logo-round" src="assets/logo.png" alt="ANDIA Soluciones Técnicas" style="width:120px;height:120px">
+        </a>
+        <p>Instalaciones y soluciones técnicas para obras y mantenimiento. Salta, Argentina.</p>
+      </div>
+      <div>
+        <h4>Servicios</h4>
+        <ul><li>Electricidad</li><li>Plomería y sanitarias</li><li>Gas</li><li>Climatización y calefacción</li><li>Mantenimiento edilicio</li></ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul><li>+54 9 387 XXX-XXXX</li><li>@andiasoltec</li><li>YouTube: @andiasolucionestecnicas</li><li>Salta, Argentina</li></ul>
+      </div>
+    </div>
+    <div class="legal"><span>© 2026 ANDIA Soluciones Técnicas</span><span>Asesoramiento · Planificación · Ejecución</span></div>
+  </div>
+</footer>
+
+<a class="fab" href="#contacto" aria-label="Escribinos por WhatsApp"><svg><use href="#i-wa"/></svg></a>
+
+</body>
+</html>
